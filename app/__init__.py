@@ -24,7 +24,7 @@ def init():
         "openid", 
         "https://www.googleapis.com/auth/userinfo.profile"
     ]
-    google_bp = make_google_blueprint(scope=google_scopes)
+    google_bp = make_google_blueprint(scope=google_scopes, redirect_to="base.hello_user")
 
     external_blueprints = [
         (google_bp, "/login")
