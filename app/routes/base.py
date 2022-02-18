@@ -9,7 +9,7 @@ base_blueprint = Blueprint("base", __name__)
 
 @base_blueprint.get("/")
 def hello():
-    return jsonify("hello, world!")
+    return render_template("index.html", message="hello, world!")
 
 
 @base_blueprint.get("/user")
