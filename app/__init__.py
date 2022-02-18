@@ -19,14 +19,17 @@ def init():
 
     login_manager = LoginManager()
 
-    google_bp = make_google_blueprint(scope=["profile", "email"])
+    google_scopes = [
+        "https://www.googleapis.com/auth/userinfo.email", 
+        "openid", 
+        "https://www.googleapis.com/auth/userinfo.profile"
+    ]
+    google_bp = make_google_blueprint(scope=google_scopes)
 
     external_blueprints = [
         (google_bp, "/login")
     ]
 
-    app = create_app(config, login_manager, external_blueprints)
-    
-    return app
+    return create_app(config, login_manager, external_blueprints)
 
 app = init()
