@@ -5,8 +5,9 @@ def create_app(config, login_manager, external_blueprints=None):
     app = Flask(__name__)
     app.config.update(config)
 
-    from app.routes.base import base
-    app.register_blueprint(base)
+    from app.routes import base_blueprint
+
+    app.register_blueprint(base_blueprint)
     login_manager.init_app(app)
 
     if external_blueprints:

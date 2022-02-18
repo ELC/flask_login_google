@@ -1,6 +1,7 @@
 from contextlib import suppress
 
 from .main import create_app
+from .controllers import load_user
 
 from dotenv import dotenv_values
 from flask_login import LoginManager
@@ -10,6 +11,7 @@ import os
 
 with suppress(ImportError):
     from rich.traceback import install
+
     install(show_locals=True)
 
 
@@ -18,18 +20,20 @@ def init():
     config.update(dotenv_values(".env"))
 
     login_manager = LoginManager()
+    login_manager.user_loader(load_user)
 
     google_scopes = [
-        "https://www.googleapis.com/auth/userinfo.email", 
-        "openid", 
-        "https://www.googleapis.com/auth/userinfo.profile"
+        "https://www.googleapis.com/auth/userinfo.email",
+        "openid",
+        "https://www.googleapis.com/auth/userinfo.profile",
     ]
-    google_bp = make_google_blueprint(scope=google_scopes, redirect_to="base.hello_user")
+    google_bp = make_google_blueprint(
+        scope=google_scopes, redirect_to="base.hello_user"
+    )
 
-    external_blueprints = [
-        (google_bp, "/login")
-    ]
+    external_blueprints = [(google_bp, "/login")]
 
     return create_app(config, login_manager, external_blueprints)
+
 
 app = init()
